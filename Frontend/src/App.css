@@ -1,0 +1,11 @@
+body{
+    background-color: black;
+}
+
+App{
+    padding: 2px;
+
+}
+body {
+  overflow-x: hidden;
+}
