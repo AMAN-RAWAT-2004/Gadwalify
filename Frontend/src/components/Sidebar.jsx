@@ -5,7 +5,7 @@ import { PiMusicNotesPlusFill } from "react-icons/pi";
 import { FaRegFolder } from "react-icons/fa6";
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
-import { createMyPlaylist, fetchMyPlaylists } from '../redux/slices/playlistSlice';
+import { createMyPlaylist, fetchMyPlaylists, resetPlaylists } from '../redux/slices/playlistSlice';
 import { Link } from 'react-router-dom';
 
 const Sidebar = () => {
@@ -16,12 +16,14 @@ const Sidebar = () => {
 
     const dispatch=useDispatch()
     const {user}=useSelector((state)=>state.auth)
-    const {playlists,loading,error}=useSelector((state)=>state.playlist)
-    useEffect(()=>{
-      if(user){
-        dispatch(fetchMyPlaylists())
-      }
-    },[user,dispatch])
+    const {myPlaylists,loading,error}=useSelector((state)=>state.playlist)
+   useEffect(()=>{
+  if(user){
+    dispatch(fetchMyPlaylists())
+  }else{
+    dispatch(resetPlaylists())
+  }
+},[user,dispatch])
 
     const handlePlaylistMenuToggle=()=>{
         setPlaylistBtn(!playlistBtn)
@@ -32,10 +34,17 @@ const Sidebar = () => {
         setPlaylistBtn(false)
 
     }
-    const handleSubmitPlaylistData=()=>{
+    const handleSubmitPlaylistData=(e)=>{
+    e.preventDefault()
 
-        dispatch(createMyPlaylist({name,description})).unwrap()
-    }
+    dispatch(createMyPlaylist({name,description}))
+      .unwrap()
+      .then(()=>{
+        setName("")
+        setDescription("")
+        setCreatePlaylist(false)
+      })
+}
     const handleSubmitPlaylistDefaultData=()=>{
       dispatch(createMyPlaylist({name:'My-Playlist',description:'Description'})).unwrap()
     }
@@ -129,7 +138,7 @@ const Sidebar = () => {
           </div>
         </div>
 
-      </div>): playlists.length===0 ? (<div>
+      </div>): myPlaylists ?.length===0 ? (<div>
             <p className='text-sm mb-2  font-semibold'>Your Playlists</p>
         <p>There is nothing in your playlist</p></div> ): (
         
@@ -139,10 +148,10 @@ const Sidebar = () => {
            {loading && <p>Loading ...</p>}
       {error && <p>Error: {error}</p>}
           {
-            playlists?.map((playlist ,index)=>(
+            myPlaylists ?.map((playlist ,index)=>(
         <Link to={`playlistDetails/${playlist._id}`} key={index} className="bg-[#1F1F1F] w-full  rounded-lg px-5 py-4 flex flex-row gap-2">
           <div className='bg-green-500 rounded-full flex justify-center items-center p-2  w-12 h-12'>
-              <p className='text-3xl font-bold  text-black'>{playlist.name.split('')[0]}</p>
+              <p className='text-3xl font-bold  text-black'>{playlist?.name?.charAt(0).toUpperCase()}</p>
           </div>
           <div className=''>
             <p className='text-lg font-semibold'>{playlist.name}</p>

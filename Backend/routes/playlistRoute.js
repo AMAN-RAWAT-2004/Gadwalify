@@ -127,21 +127,19 @@ router.delete('/:playlistId/songs/:songId',protect,async(req,res)=>{
   }
 });
 
-router.get('/my',protect, async (req, res) => {
+router.get('/my', protect, async (req, res) => {
   try {
     const userId = req.user.id;
 
     const playlists = await Playlist.find({
       owner: userId,
     })
-      .sort({ createdAt: -1 }) 
+      .sort({ createdAt: -1 })
       .lean();
-
-    if(playlists.length===0) return res.status(404).json({message:'you dont have any playlist create a new one'})
 
     res.status(200).json({
       message: 'Playlists fetched successfully',
-      data: playlists,
+      data: playlists
     });
 
   } catch (error) {

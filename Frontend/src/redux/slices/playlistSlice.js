@@ -163,20 +163,27 @@ export const removeSongFromPlaylist = createAsyncThunk(
 const playlistSlice = createSlice({
     name: 'playlist',
     initialState: {
-        playlists: [],
+        playlists: [], // all playlists
+        myPlaylists: [], // user's playlists
         playlistDetails: null,
         loading: false,
         error: null
     },
-    reducers: {},
+    reducers: {
+        resetPlaylists: (state) => {
+            state.playlists = []
+            state.myPlaylists = []
+            state.playlistDetails = null
+        }
+    },
     extraReducers: (builder) => {
         builder.addCase(fetchMyPlaylists.pending, (state) => {
                 state.loading = true
                 state.error = null
-
+                state.myPlaylists  = []
             }).addCase(fetchMyPlaylists.fulfilled, (state, action) => {
                 state.loading = false
-                state.playlists = action.payload
+                state.myPlaylists = action.payload
 
             }).addCase(fetchMyPlaylists.rejected, (state, action) => {
                 state.loading = false
@@ -188,7 +195,7 @@ const playlistSlice = createSlice({
 
             }).addCase(createMyPlaylist.fulfilled, (state, action) => {
                 state.loading = false
-                state.playlists.push(action.payload)
+                state.myPlaylists.push(action.payload)
 
             }).addCase(createMyPlaylist.rejected, (state, action) => {
                 state.loading = false
@@ -213,9 +220,9 @@ const playlistSlice = createSlice({
             }).addCase(updateMyPlaylist.fulfilled, (state, action) => {
                 state.loading = false
                 const updatedPlaylist = action.payload;
-                const index = state.playlists.findIndex((playlist) => playlist._id === updatedPlaylist._id)
+                const index = state.myPlaylists.findIndex((playlist) => playlist._id === updatedPlaylist._id)
                 if (index !== -1) {
-                    state.playlists[index] = updatedPlaylist;
+                    state.myPlaylists[index] = updatedPlaylist;
                 }
 
             }).addCase(updateMyPlaylist.rejected, (state, action) => {
@@ -224,7 +231,7 @@ const playlistSlice = createSlice({
 
             }).addCase(deleteMyPlaylist.fulfilled, (state, action) => {
                 state.loading = false
-                state.playlists = state.playlists.filter((playlist) => playlist._id !== action.payload)
+                state.myPlaylists = state.myPlaylists.filter((playlist) => playlist._id !== action.payload)
 
             }).addCase(fetchAllPlaylists.pending, (state) => {
                 state.loading = true
@@ -268,5 +275,7 @@ const playlistSlice = createSlice({
             })
     }
 })
-
+export const {
+    resetPlaylists
+} = playlistSlice.actions
 export default playlistSlice.reducer;

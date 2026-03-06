@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useState } from 'react';
 import { MdClose } from "react-icons/md";
 import { logout } from '../redux/slices/authSlice';
+import { resetPlaylists } from '../redux/slices/playlistSlice';
 
 
 const Navbar = () => {
@@ -23,6 +24,7 @@ const Navbar = () => {
    
   const handleLogout=()=>{
     dispatch(logout())
+    dispatch(resetPlaylists())
     navigate('/')
     setOpenProfile(!openProfile)
   }

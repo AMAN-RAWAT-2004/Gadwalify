@@ -9,13 +9,14 @@ const Playlist = () => {
   const dispatch=useDispatch();
   useEffect(()=>{
     dispatch(fetchAllPlaylists())
-  },[dispatch])
+    console.log("All playlists:", playlists)
+  },[dispatch,fetchAllPlaylists])
 
     if(loading)return <p className="text-white">Loading ...</p>
     if(error)return <p>Error: {error}</p>
   return (
     <div className="flex gap-6  flex-nowrap no-scrollbar pb-2 overflow-y-hidden">
-      {playlists.map((playlist,index) => (
+      {playlists && playlists.map((playlist,index) => (
         <Link to={`/playlistdetails/${playlist._id}`}
           key={index}
           className="w-50 shrink-0 px-3 py-4 text-white rounded-lg hover:bg-gray-50/20 cursor-pointer transition-all duration-300"
