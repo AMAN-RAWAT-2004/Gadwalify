@@ -43,17 +43,14 @@ router.post("/google", async (req, res) => {
     });
   }
 
-  // const authToken = jwt.sign(
-  //   { id: user._id },
-  //   process.env.JWT_SECURE,
-  //   { expiresIn: "7d" }
-  // );
-   const jwtToken = signToken(user._id)
+  const authToken = jwt.sign(
+    { id: user._id },
+    process.env.JWT_SECURE,
+    { expiresIn: "7d" }
+  );
 
-  res.json({ token: jwtToken });
+  res.json({ token: authToken });
 });
-
-
 router.post('/signup', async (req, res) => {
     const {
         name,
