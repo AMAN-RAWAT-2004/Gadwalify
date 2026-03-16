@@ -13,25 +13,8 @@ const Login = () => {
     const navigate=useNavigate()
     const {loading,error}=useSelector((state)=>state.auth)
 
-    useEffect(() => {
-    /* global google */
-
-    google.accounts.id.initialize({
-      client_id: import.meta.env.VITE_CLIENT_ID,
-      callback: handleCredentialResponse,
-    });
-
-    google.accounts.id.renderButton(
-      document.getElementById("googleButton"),
-      {
-        theme: "outline",
-        size: "large",
-        width: 300
-      }
-    );
-  }, []);
-
-  const handleCredentialResponse = async (response) => {
+    const handleCredentialResponse = async (response) => {
+  try {
     const res = await axios.post(
       `${import.meta.env.VITE_BACKEND_URL}/api/users/google`,
       {
@@ -40,7 +23,31 @@ const Login = () => {
     );
 
     localStorage.setItem("token", res.data.token);
-  };
+
+    navigate("/");
+
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+useEffect(() => {
+  /* global google */
+
+  google.accounts.id.initialize({
+    client_id: import.meta.env.VITE_CLIENT_ID,
+    callback: handleCredentialResponse,
+  });
+
+  google.accounts.id.renderButton(
+    document.getElementById("googleButton"),
+    {
+      theme: "outline",
+      size: "large",
+      width: 300
+    }
+  );
+}, []);
     
 const handleSubmit=async(e)=>{
     e.preventDefault();
