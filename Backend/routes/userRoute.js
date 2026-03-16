@@ -1,5 +1,6 @@
 const express = require('express');
 const jwt = require('jsonwebtoken')
+const { OAuth2Client } = require("google-auth-library");
 const User = require('./../models/User');
 const mongoose=require('mongoose')
 const router = express.Router()
@@ -16,6 +17,43 @@ const signToken = (id) => {
     })
 
 }
+
+const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
+
+router.post("/google", async (req, res) => {
+
+  const { token } = req.body;
+
+  const ticket = await client.verifyIdToken({
+    idToken: token,
+    audience: process.env.GOOGLE_CLIENT_ID
+  });
+
+  const payload = ticket.getPayload();
+
+  const { email, name, picture } = payload;
+
+  let user = await User.findOne({ email });
+
+  if (!user) {
+    user = await User.create({
+      email,
+      name,
+      avatar: picture
+    });
+  }
+
+  // const authToken = jwt.sign(
+  //   { id: user._id },
+  //   process.env.JWT_SECURE,
+  //   { expiresIn: "7d" }
+  // );
+   const jwtToken = signToken(user._id)
+
+  res.json({ token: jwtToken });
+});
+
+
 router.post('/signup', async (req, res) => {
     const {
         name,

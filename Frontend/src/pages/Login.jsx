@@ -4,12 +4,43 @@ import { FaSpotify } from "react-icons/fa";
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import { loginUser } from '../redux/slices/authSlice';
+import axios from 'axios';
+import { useEffect } from 'react';
 const Login = () => {
     const [email,setEmail]=useState('')
     const [password,setPassword]=useState('')
     const dispatch=useDispatch()
     const navigate=useNavigate()
     const {loading,error}=useSelector((state)=>state.auth)
+
+    useEffect(() => {
+    /* global google */
+
+    google.accounts.id.initialize({
+      client_id: import.meta.env.VITE_CLIENT_ID,
+      callback: handleCredentialResponse,
+    });
+
+    google.accounts.id.renderButton(
+      document.getElementById("googleButton"),
+      {
+        theme: "outline",
+        size: "large",
+        width: 300
+      }
+    );
+  }, []);
+
+  const handleCredentialResponse = async (response) => {
+    const res = await axios.post(
+      `${import.meta.env.VITE_BACKEND_URL}/api/users/google`,
+      {
+        token: response.credential
+      }
+    );
+
+    localStorage.setItem("token", res.data.token);
+  };
     
 const handleSubmit=async(e)=>{
     e.preventDefault();
@@ -60,6 +91,9 @@ const handleSubmit=async(e)=>{
             <p className='text-sm text-[#9C9C9C]'>Don't have an account?</p>
             <Link to='/signup' className='text-sm font-bold  '>Sign up</Link>
         </div>
+      </div>
+      <div>
+        <div id="googleButton"></div>
       </div>
             <div className='w-70 mt-9'>
                 <p className='text-xs text-center text-[#9C9C9C]'>This site is protected by reCAPTCHA and the Google
