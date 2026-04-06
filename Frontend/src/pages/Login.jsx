@@ -32,23 +32,23 @@ const Login = () => {
   }
 };
 
-useEffect(() => {
-  if (!window.google) return;
+// useEffect(() => {
+//   if (!window.google) return;
 
-  window.google.accounts.id.initialize({
-    client_id: import.meta.env.VITE_CLIENT_ID,
-    callback: handleCredentialResponse,
-  });
+//   window.google.accounts.id.initialize({
+//     client_id: import.meta.env.VITE_CLIENT_ID,
+//     callback: handleCredentialResponse,
+//   });
 
-  window.google.accounts.id.renderButton(
-    document.getElementById("googleButton"),
-    {
-      theme: "outline",
-      size: "large",
-      width: 300,
-    }
-  );
-}, []);
+//   window.google.accounts.id.renderButton(
+//     document.getElementById("googleButton"),
+//     {
+//       theme: "outline",
+//       size: "large",
+//       width: 300,
+//     }
+//   );
+// }, []);
     
 const handleSubmit=async(e)=>{
     e.preventDefault();
@@ -100,9 +100,9 @@ const handleSubmit=async(e)=>{
             <Link to='/signup' className='text-sm font-bold  '>Sign up</Link>
         </div>
       </div>
-      <div>
+      {/* <div>
         <div id="googleButton"></div>
-      </div>
+      </div> */}
             <div className='w-70 mt-9'>
                 <p className='text-xs text-center text-[#9C9C9C]'>This site is protected by reCAPTCHA and the Google
  <span className='underline'> Privacy  Policy</span> and <span className='underline'>Terms of Service</span>  apply.</p>

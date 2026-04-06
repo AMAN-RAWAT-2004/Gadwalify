@@ -18,40 +18,40 @@ const signToken = (id) => {
 
 }
 
-const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
+// const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
-router.post("/google", async (req, res) => {
-  try {
-    const { token } = req.body;
+// router.post("/google", async (req, res) => {
+//   try {
+//     const { token } = req.body;
 
-    const ticket = await client.verifyIdToken({
-      idToken: token,
-      audience: process.env.GOOGLE_CLIENT_ID
-    });
+//     const ticket = await client.verifyIdToken({
+//       idToken: token,
+//       audience: process.env.GOOGLE_CLIENT_ID
+//     });
 
-    const payload = ticket.getPayload();
+//     const payload = ticket.getPayload();
 
-    const { email, name, picture } = payload;
+//     const { email, name, picture } = payload;
 
-    let user = await User.findOne({ email });
+//     let user = await User.findOne({ email });
 
-    if (!user) {
-      user = await User.create({
-        email,
-        name,
-        avatar: picture
-      });
-    }
+//     if (!user) {
+//       user = await User.create({
+//         email,
+//         name,
+//         avatar: picture
+//       });
+//     }
 
-    const authToken = signToken(user._id);
+//     const authToken = signToken(user._id);
 
-    res.json({ token: authToken });
+//     res.json({ token: authToken });
 
-  } catch (error) {
-    console.error("Google Auth Error:", error);
-    res.status(401).json({ message: "Invalid Google token" });
-  }
-});
+//   } catch (error) {
+//     console.error("Google Auth Error:", error);
+//     res.status(401).json({ message: "Invalid Google token" });
+//   }
+// });
 
 router.post('/signup', async (req, res) => {
     const {
