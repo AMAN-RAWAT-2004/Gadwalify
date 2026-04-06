@@ -6,6 +6,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { loginUser } from '../redux/slices/authSlice';
 import axios from 'axios';
 import { useEffect } from 'react';
+
 const Login = () => {
     const [email,setEmail]=useState('')
     const [password,setPassword]=useState('')
@@ -32,19 +33,19 @@ const Login = () => {
 };
 
 useEffect(() => {
-  /* global google */
+  if (!window.google) return;
 
-  google.accounts.id.initialize({
+  window.google.accounts.id.initialize({
     client_id: import.meta.env.VITE_CLIENT_ID,
     callback: handleCredentialResponse,
   });
 
-  google.accounts.id.renderButton(
+  window.google.accounts.id.renderButton(
     document.getElementById("googleButton"),
     {
       theme: "outline",
       size: "large",
-      width: 300
+      width: 300,
     }
   );
 }, []);
