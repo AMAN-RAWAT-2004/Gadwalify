@@ -23,7 +23,6 @@ const handleCredentialResponse = async (response) => {
       }
     );
 
-    console.log(res.data); // 👈 debug
 
     localStorage.setItem("userToken", res.data.token);
     localStorage.setItem("userInfo", JSON.stringify(res.data));
