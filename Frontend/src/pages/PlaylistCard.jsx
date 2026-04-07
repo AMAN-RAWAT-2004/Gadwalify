@@ -9,7 +9,7 @@ const Playlist = () => {
   const dispatch=useDispatch();
   useEffect(()=>{
     dispatch(fetchAllPlaylists())
-    console.log("All playlists:", playlists)
+    // console.log("All playlists:", playlists)
   },[dispatch,fetchAllPlaylists])
 
     if(loading)return <p className="text-white">Loading ...</p>

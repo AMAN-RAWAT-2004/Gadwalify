@@ -69,7 +69,7 @@ const Navbar = () => {
         </div>
         <div className={`absolute top-0 -right-5 h-screen w-80 bg-black z-50 px-5 py-5 transition-transform transform duration-300  ${openProfile?'translate-x-0':'translate-x-full'}`}>
           <div className='relative flex items-center p-2'>
-            <div  className='px-4'><p  className='text-lg px-4 text-black  font-semibold py-2 bg-green-600 rounded-full'>{ user && user.data &&user.data.name.split(' ')[0].split('')[0]}</p></div>
+            <div  className='px-4'><p  className='text-lg px-4 text-black  font-semibold py-2 bg-green-600 rounded-full'>{ user && user.data &&user.data?.name?.split(' ')[0]?.charAt(0)?.toUpperCase()}</p></div>
             <div className='flex flex-col '>
               <p className='text-lg font-bold'>{user && user.data &&  user.data.name}</p>
               <p className='text-xs text-gray-400'>{user && user.data &&  user.data.email}</p>
@@ -83,7 +83,7 @@ const Navbar = () => {
             </div>
         </div>
         {
-          user?(<div  className='px-4'><button onClick={handleProfileToggle} className='text-lg px-4 text-black text-center font-semibold py-2 bg-green-600 rounded-full'>{user.data.name.split(' ')[0].split('')[0]}</button></div>):(<div className='flex gap-4 items-center'>
+          user?(<div  className='px-4'><button onClick={handleProfileToggle} className='text-lg px-4 text-black text-center font-semibold py-2 bg-green-600 rounded-full'>{ user && user.data &&user.data?.name?.split(' ')[0]?.charAt(0)?.toUpperCase()}</button></div>):(<div className='flex gap-4 items-center'>
         <Link to="/signup" className="text-gray-300 hover:text-white font-semibold">
           Sign up
         </Link>

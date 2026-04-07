@@ -1,154 +1,195 @@
 const express = require('express');
 const jwt = require('jsonwebtoken')
-const { OAuth2Client } = require("google-auth-library");
+const {
+  OAuth2Client
+} = require("google-auth-library");
 const User = require('./../models/User');
-const mongoose=require('mongoose')
+const mongoose = require('mongoose')
 const router = express.Router()
 const {
-    protect,
-    admin
+  protect,
+  admin
 } = require('../middlewares/authentication');
 
 const signToken = (id) => {
-    return jwt.sign({
-        id
-    }, process.env.JWT_SECURE, {
-        expiresIn: process.env.JWT_EXPIRE
-    })
+  return jwt.sign({
+    id
+  }, process.env.JWT_SECURE, {
+    expiresIn: process.env.JWT_EXPIRE
+  })
 
 }
 
-// const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
+const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
-// router.post("/google", async (req, res) => {
-//   try {
-//     const { token } = req.body;
+router.post("/google", async (req, res) => {
+  try {
+    const {
+      token
+    } = req.body;
 
-//     const ticket = await client.verifyIdToken({
-//       idToken: token,
-//       audience: process.env.GOOGLE_CLIENT_ID
-//     });
+    if (!token) {
+      return res.status(400).json({
+        message: "Token is required"
+      });
+    }
 
-//     const payload = ticket.getPayload();
+    // ✅ Verify Google token
+    const ticket = await client.verifyIdToken({
+      idToken: token,
+      audience: process.env.GOOGLE_CLIENT_ID
+    });
 
-//     const { email, name, picture } = payload;
+    const payload = ticket.getPayload();
 
-//     let user = await User.findOne({ email });
+    if (!payload.email_verified) {
+      return res.status(400).json({
+        message: "Email not verified"
+      });
+    }
 
-//     if (!user) {
-//       user = await User.create({
-//         email,
-//         name,
-//         avatar: picture
-//       });
-//     }
+    const {
+      email,
+      name,
+      picture
+    } = payload;
 
-//     const authToken = signToken(user._id);
+    // 🔍 Check user
+    let user = await User.findOne({
+      email
+    });
 
-//     res.json({ token: authToken });
+    // ➕ Create user if not exists
+    if (!user) {
+      user = await User.create({
+        email,
+        name,
+        avatar: picture,
+        provider: "google"
+      });
+    }
 
-//   } catch (error) {
-//     console.error("Google Auth Error:", error);
-//     res.status(401).json({ message: "Invalid Google token" });
-//   }
-// });
+    // 🔐 Generate JWT
+    const authToken = signToken(user._id);
+
+    // ✅ SEND USER + TOKEN
+    res.status(200).json({
+      token: authToken,
+      data: {
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+        role: user.role
+      }
+    });
+
+  } catch (error) {
+    console.error("Google Auth Error:", error);
+    res.status(401).json({
+      message: "Google authentication failed"
+    });
+  }
+});
+
 
 router.post('/signup', async (req, res) => {
-    const {
-        name,
-        email,
-        password
-    } = req.body;
-    try {
-        let user = await User.findOne({
-            email
-        });
-        if (user) {
-            return res.status(400).json('User Already Exists')
-        }
-        user = new User({
-            name,
-            email,
-            password
-        })
-        await user.save()
-        const token = signToken(user._id)
-        res.status(201).json({
-            message: 'Successfully Signed up',
-            token,
-            data: {
-                _id: user._id,
-                email: user.email,
-                name: user.name,
-                role: user.role
-
-            }
-
-        })
-
-
-
-    } catch (error) {
-        console.log(error)
-        res.status(500).send('server error')
+  const {
+    name,
+    email,
+    password
+  } = req.body;
+  try {
+    let user = await User.findOne({
+      email
+    });
+    if (user) {
+      return res.status(400).json('User Already Exists')
     }
+    user = new User({
+      name,
+      email,
+      password
+    })
+    await user.save()
+    const token = signToken(user._id)
+    res.status(201).json({
+      message: 'Successfully Signed up',
+      token,
+      data: {
+        _id: user._id,
+        email: user.email,
+        name: user.name,
+        role: user.role
+
+      }
+
+    })
+
+
+
+  } catch (error) {
+    console.log(error)
+    res.status(500).send('server error')
+  }
 
 })
 
 router.post('/login', async (req, res) => {
-    const {
-        email,
-        password
-    } = req.body;
-    try {
-        if (!email || !password) return res.status(404).json({
-            message: 'Required Fields are empty'
-        })
-        const user = await User.findOne({
-            email
-        }).select('+password')
-        if (!user) return res.status(404).json({
-            message: 'Invalid user'
-        })
-        const isMatch = await user.matchPassword(password)
-        if (!isMatch) return res.status(404).json({
-            message: 'Password Incorrect'
-        })
-        const token = signToken(user._id)
-        res.status(201).json({
-            message: 'Successfully Logged in',
-            token,
-            data: {
-                _id: user._id,
-                email: user.email,
-                name: user.name,
-                role: user.role
+  const {
+    email,
+    password
+  } = req.body;
+  try {
+    if (!email || !password) return res.status(404).json({
+      message: 'Required Fields are empty'
+    })
+    const user = await User.findOne({
+      email
+    }).select('+password')
+    if (!user) return res.status(404).json({
+      message: 'Invalid user'
+    })
+    const isMatch = await user.matchPassword(password)
+    if (!isMatch) return res.status(404).json({
+      message: 'Password Incorrect'
+    })
+    const token = signToken(user._id)
+    res.status(201).json({
+      message: 'Successfully Logged in',
+      token,
+      data: {
+        _id: user._id,
+        email: user.email,
+        name: user.name,
+        role: user.role
 
-            }
+      }
 
-        })
-    } catch (error) {
-        console.log(error)
-        res.status(500).send('server error')
-    }
+    })
+  } catch (error) {
+    console.log(error)
+    res.status(500).send('server error')
+  }
 
 })
 
 router.get('/profile', protect, async (req, res) => {
-    res.json(req.user)
+  res.json(req.user)
 })
 
 
-router.get('/',protect,admin, async (req, res) => {
+router.get('/', protect, admin, async (req, res) => {
   try {
     const users = await User.find({})
-      .select('-password') 
-      .sort({ createdAt: -1 })
+      .select('-password')
+      .sort({
+        createdAt: -1
+      })
       .lean();
 
     res.status(200).json({
       message: 'Users fetched successfully',
-      totalUsers:users.length,
+      totalUsers: users.length,
       data: users,
     });
 
@@ -161,11 +202,13 @@ router.get('/',protect,admin, async (req, res) => {
 });
 
 
-router.get('/:id',protect,admin, async (req, res) => {
-  const { id } = req.params;
+router.get('/:id', protect, admin, async (req, res) => {
+  const {
+    id
+  } = req.params;
 
   try {
-  
+
     if (!mongoose.Types.ObjectId.isValid(id)) {
       return res.status(400).json({
         message: 'Invalid user id',
@@ -173,7 +216,7 @@ router.get('/:id',protect,admin, async (req, res) => {
     }
 
     const user = await User.findById(id)
-      .select('-password') 
+      .select('-password')
       .lean();
 
     if (!user) {
