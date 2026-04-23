@@ -1,21 +1,20 @@
-const dotenv=require('dotenv')
-const express=require('express')
-const mongoose=require('mongoose')
-const cors=require('cors')
+const dotenv = require('dotenv')
+const express = require('express')
+const mongoose = require('mongoose')
+const cors = require('cors')
 // const morgan=require('morgan')
-const userRoutes=require('./routes/userRoute')
-const songRoutes=require('./routes/songRoute')
-const playlistRoutes=require('./routes/playlistRoute')
-const redisClient=require('./config/redisClient')
+const userRoutes = require('./routes/userRoute')
+const songRoutes = require('./routes/songRoute')
+const playlistRoutes = require('./routes/playlistRoute')
+const redisClient = require('./config/redisClient')
 // CREATING APP WITH EXPRESS 
-const app=express();
+const app = express();
 
 
 // MIDDLEWARE 
 app.use(express.json())
 app.use(cors({
-  origin: "https://gadwalify-ns8s.vercel.app",
-  credentials: true
+  origin: "*"
 }));
 // app.use(morgan("dev"))
 
@@ -26,25 +25,25 @@ dotenv.config({})
 
 
 // CONNECTION TO DATABASE 
-mongoose.connect(process.env.DATABASE).then(()=>{
+mongoose.connect(process.env.DATABASE).then(() => {
     console.log('DATABASE CONNECTED SUCCESFULLY')
-}).catch((err)=>{
+}).catch((err) => {
     console.log(err)
 })
 
 // SERVER 
-app.get('/',async(req,res)=>{
+app.get('/', async (req, res) => {
     res.end('Welcome to Spotify clone')
 })
 
 //API'S
-app.use('/api/users',userRoutes)
-app.use('/api/songs',songRoutes)
-app.use('/api/playlist',playlistRoutes)
+app.use('/api/users', userRoutes)
+app.use('/api/songs', songRoutes)
+app.use('/api/playlist', playlistRoutes)
 
 
 
-const Port=process.env.PORT ||8000;
+const Port = process.env.PORT || 8000;
 
 (async () => {
     try {
