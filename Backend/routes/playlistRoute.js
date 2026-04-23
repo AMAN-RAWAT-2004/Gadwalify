@@ -170,7 +170,7 @@ router.get('/:id',protect,async(req,res)=>{
 })
 
 
-router.put("/:id", protect, async (req, res) => {
+router.put("/:id", protect,cache("playlist",120), async (req, res) => {
   try {
     const { id } = req.params;
     const { name, description } = req.body;
