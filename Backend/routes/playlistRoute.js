@@ -4,6 +4,7 @@ const mongoose  = require('mongoose');
 const { protect } = require('../middlewares/authentication');
 const Playlist=require('../models/Playlist')
 const Song = require('../models/Song');
+const cache = require('../middlewares/cacheMiddleware');
 
 
 router.post('/',protect,async(req, res) => {
@@ -235,7 +236,7 @@ router.delete("/:id", protect, async (req, res) => {
   }
 });
 
-router.get("/", async (req, res) => {
+router.get("/",cache("playlists",120) ,async (req, res) => {
   try {
     const playlists = await Playlist.find()
       .populate("owner", "name")

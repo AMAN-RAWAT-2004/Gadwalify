@@ -10,7 +10,7 @@ const {
   protect,
   admin
 } = require('../middlewares/authentication');
-
+const cache=require('./../middlewares/cacheMiddleware')
 const signToken = (id) => {
   return jwt.sign({
     id
@@ -173,12 +173,12 @@ router.post('/login', async (req, res) => {
 
 })
 
-router.get('/profile', protect, async (req, res) => {
+router.get('/profile', protect,cache("profile",120) , async (req, res) => {
   res.json(req.user)
 })
 
 
-router.get('/', protect, admin, async (req, res) => {
+router.get('/', protect, admin, cache("users",120) ,async (req, res) => {
   try {
     const users = await User.find({})
       .select('-password')
@@ -202,7 +202,7 @@ router.get('/', protect, admin, async (req, res) => {
 });
 
 
-router.get('/:id', protect, admin, async (req, res) => {
+router.get('/:id', protect, admin,cache("user",120) , async (req, res) => {
   const {
     id
   } = req.params;
@@ -237,4 +237,5 @@ router.get('/:id', protect, admin, async (req, res) => {
     });
   }
 });
+
 module.exports = router;

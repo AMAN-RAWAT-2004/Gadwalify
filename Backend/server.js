@@ -2,10 +2,11 @@ const dotenv=require('dotenv')
 const express=require('express')
 const mongoose=require('mongoose')
 const cors=require('cors')
-const morgan=require('morgan')
+// const morgan=require('morgan')
 const userRoutes=require('./routes/userRoute')
 const songRoutes=require('./routes/songRoute')
 const playlistRoutes=require('./routes/playlistRoute')
+const redisClient=require('./config/redisClient')
 // CREATING APP WITH EXPRESS 
 const app=express();
 
@@ -13,7 +14,7 @@ const app=express();
 // MIDDLEWARE 
 app.use(express.json())
 app.use(cors())
-app.use(morgan("dev"))
+// app.use(morgan("dev"))
 
 
 
@@ -41,6 +42,17 @@ app.use('/api/playlist',playlistRoutes)
 
 
 const Port=process.env.PORT ||8000;
-app.listen(Port,()=>{
-    console.log(`The Server is listening to the ${Port}`)
-})
+
+(async () => {
+    try {
+        await redisClient.connectRedis();
+        console.log("Redis Connected ✅");
+
+        app.listen(Port, () => {
+            console.log(`Server is Listening on Port ${Port}`);
+        });
+
+    } catch (err) {
+        console.log("Redis Connection Failed ", err);
+    }
+})();

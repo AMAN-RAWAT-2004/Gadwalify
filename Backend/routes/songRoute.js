@@ -8,6 +8,7 @@ const {
 const upload = require('./../middlewares/upload')
 const uploadToCloudinary = require('../utils/uploadToCloudinary')
 const mongoose=require('mongoose')
+const cache = require('../middlewares/cacheMiddleware')
 
 router.post(
   '/',
@@ -96,7 +97,7 @@ router.post(
   }
 )
 
-router.get('/', async (req, res) => {
+router.get('/',cache("songs",120) ,async (req, res) => {
   try {
     const songs = await Song.find({});
     if (!songs) return res.status(404).json({
@@ -117,7 +118,7 @@ router.get('/', async (req, res) => {
   }
 })
 
-router.get('/:id', async (req, res) => {
+router.get('/:id',cache("song",120) , async (req, res) => {
   const {
     id
   } = req.params;
