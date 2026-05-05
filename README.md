@@ -155,3 +155,20 @@ Inspired by Spotify UI/UX and modern music streaming platforms.
 ---
 
 ⭐ If you like this project, give it a star on GitHub!
+
+## 📸 Screenshots
+
+### 🏠 Home Page
+![Home](./screenshots/home.png)
+
+### 🔐 Login Page
+![Login](./screenshots/login.png)
+
+### 📝 Signup Page
+![Signup](./screenshots/signup.png)
+
+### 🎵 Playlist Page
+![Playlist](./screenshots/playlist.png)
+
+### 👤 Profile Page
+![Profile](./screenshots/profile.png)
