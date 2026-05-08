@@ -1,4 +1,4 @@
-const { redisClient } = require("./../config/redisClient");
+const { redisClient } = require("../config/redisClient");
 
 const cache = (keyPrefix, ttl = 60) => {
   return async (req, res, next) => {

@@ -53,6 +53,7 @@ const handleCredentialResponse = async (response) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
     try {
       await dispatch(loginUser({ email, password })).unwrap();
       navigate("/");
@@ -62,12 +63,12 @@ const handleCredentialResponse = async (response) => {
   };
 
   return (
-    <section className="py-10 overflow-y-hidden">
+    <section className="py-10 flex justify-center h-screen items-center  overflow-hidden">
       <div className="flex flex-col justify-center items-center gap-8  text-white">
         <div className="flex flex-col justify-center gap-2 items-center">
           <FaSpotify className="text-4xl" />
 
-          <h1 className="font-bold text-center w-100 leading-tight text-5xl ">
+          <h1 className="font-bold text-center w-100 leading-tight text-4xl md:text-5xl ">
             Welcome back
           </h1>
         </div>
@@ -87,7 +88,7 @@ const handleCredentialResponse = async (response) => {
                 type="email"
                 onChange={(e) => setEmail(e.target.value)}
                 value={email}
-                className="p-3 w-75 border border-[#7C7C7C] rounded-sm text-sm font-semibold"
+                className="md:p-3 p-2 w-50 md:w-75 border border-[#7C7C7C] rounded-sm text-sm font-semibold"
                 required
               />
             </div>
@@ -97,21 +98,21 @@ const handleCredentialResponse = async (response) => {
                 type="password"
                 onChange={(e) => setPassword(e.target.value)}
                 value={password}
-                className="p-3 w-75 border border-[#7C7C7C] rounded-sm text-sm font-semibold"
+                className="md:p-3 p-2 w-50 md:w-75 border border-[#7C7C7C] rounded-sm text-sm font-semibold"
                 required
               />
             </div>
             <div className="flex flex-col mt-2 ">
               <input
                 type="submit"
-                className="py-2 w-75 hover:bg-[#3BE477] transition-all duration-300 hover:cursor-pointer text-black rounded-3xl bg-[#14d959] text-lg  font-semibold"
+                className="md:p-2 p-1 w-50 md:w-75 hover:bg-[#3BE477] transition-all duration-300 hover:cursor-pointer text-black rounded-3xl bg-[#14d959] text-lg  font-semibold"
                 value={loading ? "loading..." : "Login"}
               />
             </div>
           </form>
           <div className=" flex flex-col justify-center gap-3 items-center ">
-            <p className="text-sm text-[#9C9C9C]">Don't have an account?</p>
-            <Link to="/signup" className="text-sm font-bold  ">
+            <p className="text-xs md:text-sm text-[#9C9C9C]">Don't have an account?</p>
+            <Link to="/signup" className="text-xs md:text-sm font-bold  ">
               Sign up
             </Link>
           </div>

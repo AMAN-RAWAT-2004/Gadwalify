@@ -6,7 +6,7 @@ import Sidebar from "../components/Sidebar";
 
 const UserLayout = () => {
   return (
-    <div className="bg-black text-white h-screen flex gap-1 flex-col">
+    <div className="bg-black text-white h-screen overflow-x-hidden flex gap-1 flex-col">
 
       {/* HEADER */}
       <Header />
@@ -15,7 +15,7 @@ const UserLayout = () => {
       <div className="flex gap-4 flex-1 overflow-y-hidden px-2">
 
         {/* SIDEBAR */}
-        <div className=" w-2/7 rounded-lg bg-[#121212] h-full ">
+        <div className="hidden md:block w-2/7 rounded-lg bg-[#121212] h-full ">
           <Sidebar />
         </div>
 

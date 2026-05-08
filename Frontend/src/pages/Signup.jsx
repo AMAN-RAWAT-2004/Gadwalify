@@ -24,14 +24,14 @@ const Signup = () => {
       }
     };
   return (
-    <section className='py-10 overflow-y-hidden'>
+    <section className='py-10 flex justify-center h-screen items-center  overflow-hidden'>
      <div className='flex flex-col justify-center items-center gap-5  text-white'>
       
         <div className='flex flex-col justify-center gap-2 items-center'>
         <FaSpotify className='text-4xl'/>
         
         
-          <h1 className='font-bold text-center w-80 leading-tight text-5xl '>Sign up to start listening</h1>
+          <h1 className='font-bold text-center w-80 leading-tight text-4xl md:text-5xl '>Sign up to start listening</h1>
         
       </div>
       <div className='flex flex-col justify-center items-center gap-10'>
@@ -43,24 +43,24 @@ const Signup = () => {
 )}
             <div className='flex flex-col gap-2'>
                 <label className='font-semibold text-xs' >Name</label>
-                <input type="text" value={name} onChange={(e)=>setName(e.target.value)} className='p-3 w-75 border border-[#7C7C7C] rounded-sm text-sm font-semibold ' placeholder='Aegon Targaryen' required/>
+                <input type="text" value={name} onChange={(e)=>setName(e.target.value)} className='md:p-3 w-50 p-2 md:w-75 border border-[#7C7C7C] rounded-sm text-sm font-semibold ' placeholder='Aegon Targaryen' required/>
             </div>
             <div className='flex flex-col gap-2'>
                 <label className='font-semibold text-xs' >Email address</label>
-                <input type="email" value={email} onChange={(e)=>setEmail(e.target.value)} className='p-3 w-75 border border-[#7C7C7C] rounded-sm text-sm font-semibold' placeholder='name@domain.com' required/>
+                <input type="email" value={email} onChange={(e)=>setEmail(e.target.value)} className='md:p-3 w-50 p-2 md:w-75 border border-[#7C7C7C] rounded-sm text-sm font-semibold' placeholder='name@domain.com' required/>
             </div>
             <div className='flex flex-col gap-2'>
                 <label className='font-semibold text-xs' >Password</label>
-                <input type="password" value={password} onChange={(e)=>setPassword(e.target.value)} className='p-3 w-75 border border-[#7C7C7C] rounded-sm text-sm font-semibold' placeholder='1@#2$%3^&' required/>
+                <input type="password" value={password} onChange={(e)=>setPassword(e.target.value)} className='md:p-3 w-50 p-2 md:w-75 border border-[#7C7C7C] rounded-sm text-sm font-semibold' placeholder='1@#2$%3^&' required/>
             </div>
             <div className='flex flex-col mt-2 '>
-                <input type="submit" className='py-2 w-75 hover:bg-[#3BE477] transition-all duration-300 hover:cursor-pointer text-black rounded-3xl bg-[#14d959] text-lg  font-semibold' value={loading?"loading...":"Sign up"}/>
+                <input type="submit" className='md:py-2 w-50 py-1 md:w-75 hover:bg-[#3BE477] transition-all duration-300 hover:cursor-pointer text-black rounded-3xl bg-[#14d959] text-lg  font-semibold' value={loading?"loading...":"Sign up"}/>
             </div>
 
         </form>
         <div className=' flex flex-col justify-center gap-3 items-center '>
-            <p className='text-sm text-[#9C9C9C]'>Already have an account?</p>
-            <Link to='/login' className='text-sm font-bold  '>Log in</Link>
+            <p className='text-xs md:text-sm text-[#9C9C9C]'>Already have an account?</p>
+            <Link to='/login' className='text-xs md:text-sm font-bold  '>Log in</Link>
 
         </div>
       </div>

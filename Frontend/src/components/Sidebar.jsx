@@ -49,7 +49,7 @@ const Sidebar = () => {
       dispatch(createMyPlaylist({name:'My-Playlist',description:'Description'})).unwrap()
     }
   return (
-    <div className="bg-[#121212] h-full w-full flex flex-col gap-10 px-3 py-3 rounded-lg">
+    <div className="bg-[#121212] h-full w-full hidden md:flex flex-col gap-10 px-3 py-3 rounded-lg">
 
       {/* UP PART */}
       <div className="relative flex justify-between items-center p-3">

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { FaSpotify } from "react-icons/fa";
 import { GoHomeFill } from "react-icons/go";
@@ -59,7 +59,7 @@ const Navbar = () => {
           {user && user.data.role==="admin"&&(<Link to='/admin' className="bg-green-600 block px-2 py-1 rounded text-black">Admin</Link>)}
         
 
-        <div className="flex items-center gap-4 pr-4 border-r border-white/20">
+        <div className="hidden md:flex items-center gap-4 pr-4 border-r border-white/20">
           <Link to="/premium" className="text-gray-300 hover:text-white font-semibold">
             Premium
           </Link>
