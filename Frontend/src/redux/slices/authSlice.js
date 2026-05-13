@@ -55,6 +55,35 @@ export const fetchAllUsers=createAsyncThunk('auth/fetchAllUsers',async( _ ,{reje
 
 })
 
+export const getProfile = createAsyncThunk(
+  "auth/getProfile",
+
+  async (_, { rejectWithValue }) => {
+
+    try {
+
+      const response = await axios.get(
+        `${import.meta.env.VITE_BACKEND_URL}/api/users/profile`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("userToken")}`,
+          },
+        }
+      );
+
+      return {
+        data: response.data
+      };
+
+    } catch (error) {
+
+      return rejectWithValue(
+        error.response.data
+      );
+    }
+  }
+);
+
 const authSlice=createSlice({
     name:"auth",
     initialState:{
@@ -104,7 +133,33 @@ const authSlice=createSlice({
         }).addCase(fetchAllUsers.rejected, (state, action) => {
             state.loading = false;
             state.error = action.payload.message;
-        })
+        }).addCase(getProfile.pending, (state) => {
+
+    state.loading = true;
+
+    state.error = null;
+
+})
+
+.addCase(getProfile.fulfilled, (state, action) => {
+
+    state.loading = false;
+
+    state.user = action.payload;
+
+    // UPDATE LOCAL STORAGE
+    localStorage.setItem(
+      "userInfo",
+      JSON.stringify(action.payload)
+    );
+})
+
+.addCase(getProfile.rejected, (state, action) => {
+
+    state.loading = false;
+
+    state.error = action.payload.message;
+})
     }
 })
 

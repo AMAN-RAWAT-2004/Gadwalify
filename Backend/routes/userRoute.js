@@ -79,7 +79,9 @@ router.post("/google", async (req, res) => {
         _id: user._id,
         name: user.name,
         email: user.email,
-        role: user.role
+        role: user.role,
+       isPremium:user.isPremium
+
       }
     });
 
@@ -119,7 +121,10 @@ router.post('/signup', async (req, res) => {
         _id: user._id,
         email: user.email,
         name: user.name,
-        role: user.role
+        role: user.role,
+       isPremium:user.isPremium
+
+
 
       }
 
@@ -161,7 +166,9 @@ router.post('/login', async (req, res) => {
         _id: user._id,
         email: user.email,
         name: user.name,
-        role: user.role
+        role: user.role,
+        isPremium:user.isPremium
+
 
       }
 

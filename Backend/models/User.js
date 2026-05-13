@@ -22,7 +22,13 @@ const userSchema=new mongoose.Schema({
         type:String,
         enum:['admin','listener'],
         default:'listener'
-    }
+    },
+    isPremium: {
+    type: Boolean,
+    default: false,
+  },
+
+  premiumExpiresAt: Date,
 },{
     timestamps:true
 })

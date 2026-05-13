@@ -15,6 +15,7 @@ import UserManagment from "./Admin/UserManagment"
 import SongsManagment from "./Admin/SongsManagment"
 import AddSongForm from "./Admin/AddSongForm"
 import PlaylistDetails from "./common/PlaylistDetails"
+import Premium from "./pages/Premium"
 function App() {
 
   return (
@@ -26,6 +27,7 @@ function App() {
       <Route path="/" element={<UserLayout/>}>
       <Route index element={<Home/>} />
       <Route path="support" element={<Support/>} />
+      <Route path="premium" element={<Premium/>} />
       <Route path="songdetails/:id" element={<SongDetailsPage/>} />
       <Route path="playlistDetails/:id" element={<PlaylistDetails/>} />
       </Route>

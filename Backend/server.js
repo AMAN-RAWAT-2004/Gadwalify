@@ -7,6 +7,7 @@ const userRoutes = require('./routes/userRoute')
 const songRoutes = require('./routes/songRoute')
 const playlistRoutes = require('./routes/playlistRoute')
 const redisClient = require('./config/redisClient')
+const paymentRoutes = require("./routes/paymentRoute");
 // CREATING APP WITH EXPRESS 
 const app = express();
 
@@ -40,6 +41,7 @@ app.get('/', async (req, res) => {
 app.use('/api/users', userRoutes)
 app.use('/api/songs', songRoutes)
 app.use('/api/playlist', playlistRoutes)
+app.use("/api/payment", paymentRoutes);
 
 
 
