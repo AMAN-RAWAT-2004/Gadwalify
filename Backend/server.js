@@ -1,4 +1,6 @@
 const dotenv = require('dotenv')
+dotenv.config({})
+
 const express = require('express')
 const mongoose = require('mongoose')
 const cors = require('cors')
@@ -22,7 +24,6 @@ app.use(cors({
 
 
 // CONNECTION TO ENV FILES 
-dotenv.config({})
 
 
 // CONNECTION TO DATABASE 
