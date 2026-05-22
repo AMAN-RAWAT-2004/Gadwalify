@@ -114,9 +114,9 @@ export default function Premium() {
                 Valid till:
                 {" "}
                 {
-                  new Date(
+                  user.data.premiumExpiresAt ? new Date(
                     user.data.premiumExpiresAt
-                  ).toDateString()
+                  ).toDateString() : 'Loading...'
                 }
               </p>
 

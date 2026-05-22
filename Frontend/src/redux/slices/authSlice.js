@@ -14,7 +14,7 @@ export const loginUser=createAsyncThunk('auth/loginUser',async(userData,{rejectW
         
         localStorage.setItem("userInfo", JSON.stringify(response.data))
         localStorage.setItem("userToken", response.data.token)
-        return response.data.user;
+        return response.data;
 
     } catch (error) {
         return rejectWithValue(error.response.data)
@@ -27,10 +27,10 @@ export const registerUser = createAsyncThunk("auth/registerUser", async (userDat
 }) => {
     try {
         const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/users/signup`, userData);
-        localStorage.setItem("userInfo", JSON.stringify(response.data.user))
+        localStorage.setItem("userInfo", JSON.stringify(response.data))
         localStorage.setItem("userToken", response.data.token)
 
-        return response.data.user;
+        return response.data;
     } catch (error) {
         return rejectWithValue(error.response.data)
     }
@@ -104,6 +104,9 @@ const authSlice=createSlice({
         generateNewGuestId: (state) => {
             state.guestId = `guest_${new Date().getTime()}`;
             localStorage.setItem("guestId", state.guestId)
+        },
+        setCredentials: (state, action) => {
+            state.user = action.payload;
         }
     }, extraReducers: (builder) => {
         builder.addCase(loginUser.pending, (state) => {
@@ -165,6 +168,7 @@ const authSlice=createSlice({
 
 export const {
     logout,
-    generateNewGuestId
+    generateNewGuestId,
+    setCredentials
 } = authSlice.actions;
 export default authSlice.reducer;

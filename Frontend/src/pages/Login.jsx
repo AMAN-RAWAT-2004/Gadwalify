@@ -3,7 +3,7 @@ import { useState } from "react";
 import { FaSpotify } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-import { loginUser } from "../redux/slices/authSlice";
+import { loginUser, setCredentials } from "../redux/slices/authSlice";
 import axios from "axios";
 import { useEffect } from "react";
 
@@ -23,9 +23,9 @@ const handleCredentialResponse = async (response) => {
       }
     );
 
-
     localStorage.setItem("userToken", res.data.token);
     localStorage.setItem("userInfo", JSON.stringify(res.data));
+    dispatch(setCredentials(res.data));
 
     navigate("/");
   } catch (error) {
