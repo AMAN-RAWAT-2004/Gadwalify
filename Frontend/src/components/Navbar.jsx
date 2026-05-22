@@ -83,14 +83,14 @@ const Navbar = () => {
             </div>
         </div>
         {
-          user?(<div  className='px-4'><button onClick={handleProfileToggle} className='text-lg px-4 text-black text-center font-semibold py-2 bg-green-600 rounded-full'>{ user && user.data &&user.data?.name?.split(' ')[0]?.charAt(0)?.toUpperCase()}</button></div>):(<div className='flex gap-4 items-center'>
+          user?(<div  className='px-4'><button onClick={handleProfileToggle} className='text-lg px-4 text-black text-center font-semibold py-2 bg-green-600 rounded-full'>{ user && user.data &&user.data?.name?.split(' ')[0]?.charAt(0)?.toUpperCase()}</button></div>):(<div className='flex gap-3 md:gap-4 items-center'>
         <Link to="/signup" className="text-gray-300 hover:text-white font-semibold">
           Sign up
         </Link>
 
         <button
           onClick={handleLogin}
-          className="px-6 py-2 bg-white text-black rounded-full text-sm font-bold hover:scale-105 transition"
+          className="px-3 py-2 md:px-6 md:py-2 bg-white text-black rounded-full text-sm font-bold hover:scale-105 transition"
         >
           Log in
         </button>

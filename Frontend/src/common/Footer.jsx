@@ -18,7 +18,7 @@ const Footer = () => {
         </div>
         {
           user ?(''): (<div className='w-100 flex justify-end px-5'>
-            <button onClick={handleSignup}  className='px-5 md:px-7 text-black py-3 bg-white rounded-4xl text-16px transform hover:scale-110 transition duration-300 font-bold'>Sign up free</button>
+            <button onClick={handleSignup}  className='px-4 md:px-7 text-black py-3 bg-white rounded-4xl text-12px md:text-16px transform hover:scale-110 transition duration-300 font-bold'>Sign up free</button>
 
         </div>)
         }
